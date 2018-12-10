@@ -38,6 +38,17 @@ void SetupLCD() {
   delay(100);
 }
 
+void PullDownBus() {
+  digitalWrite(LCD_D0, LOW);
+  digitalWrite(LCD_D1, LOW);
+  digitalWrite(LCD_D2, LOW);
+  digitalWrite(LCD_D3, LOW);
+  digitalWrite(LCD_D4, LOW);
+  digitalWrite(LCD_D5, LOW);
+  digitalWrite(LCD_D6, LOW);
+  digitalWrite(LCD_D7, LOW);
+}
+
 // Send Character
 void SendCharacter(char cCharacter) {
  SendCommand(byte(cCharacter), 0x1);
@@ -178,6 +189,9 @@ void SendCommand(byte cCharacter, byte bBool) {
   
   // Pulse Enable
   ClockPulse();
+  
+  // Pull Bus LOW
+  PullDownBus();
 }
 
 // Pulse Enable
