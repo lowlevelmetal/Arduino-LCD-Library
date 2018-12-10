@@ -294,7 +294,7 @@ void loop() {
    delay(250);
   }
   
-  SendCharacter(' ');
+  SendPhrase("  ");
   
   ShiftDisplayDown(); 
   
@@ -310,8 +310,6 @@ void loop() {
    SendCharacter(' ');
    delay(100);
   }
-  
-  SendCharacter(' ');
   
   ShiftDisplayUp();
   
