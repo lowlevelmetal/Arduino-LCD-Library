@@ -62,62 +62,23 @@ void InitLCD() {
   
   // Run LCD 4Bit Init
   InitSequence();
-  
-  // Reset Screen and Cursor
-  // Configure Dimensions
-  SendCommand(0b00101100, 0x0);
-  // Turn on Screen, Enable Cursor, and Blink Cursor
-  SendCommand(0b00001111, 0x0);
-  // Clear Display
-  SendCommand(0b00000001, 0x0);
-  //Set Print from Left To Write
-  SendCommand(0b00000110, 0x0);
 } 
 
 // LCD 4Bit Init
 void InitSequence() {
  // LCD Init Commands for 4Bit Mode
- write4(0b0011);
- write4(0b0011);
- write4(0b0011);
- write4(0b0010);
+ SendCommand(0b00110011, 0x0);
+ SendCommand(0b00110010, 0x0);
  
-}
-
-void write4(byte cCharacter) {
-  digitalWrite(LCD_RW, LOW);
-  digitalWrite(LCD_RS, LOW);
-  
-  // Communication Timing
-  delayMicroseconds(1);
-  
-  // Write Data
-  if((cCharacter >> 0) & 1) {
-   digitalWrite(LCD_D4, HIGH); 
-  } else { 
-   digitalWrite(LCD_D4, LOW);
-  }
-  
-  if((cCharacter >> 1) & 1) {
-   digitalWrite(LCD_D5, HIGH); 
-  } else { 
-   digitalWrite(LCD_D5, LOW);
-  }
-  
-  if((cCharacter >> 2) & 1) {
-   digitalWrite(LCD_D6, HIGH); 
-  } else { 
-   digitalWrite(LCD_D6, LOW);
-  }
-  
-  if((cCharacter >> 3) & 1) {
-   digitalWrite(LCD_D7, HIGH); 
-  } else { 
-   digitalWrite(LCD_D7, LOW);
-  }
-  
-  // Pulse Enable
-  ClockPulse();
+ // Reset Screen and Cursor
+ // Configure Dimensions
+ SendCommand(0b00101100, 0x0);
+ // Turn on Screen, Enable Cursor, and Blink Cursor
+ SendCommand(0b00001111, 0x0);
+ // Clear Display
+ SendCommand(0b00000001, 0x0);
+ //Set Print from Left To Write
+ SendCommand(0b00000110, 0x0);
 }
 
 // Sends Write Command
@@ -224,6 +185,20 @@ void ClearScreen() {
   SendCommand(0b00000001, 0x0);
 }
 
+void ReturnHome() {
+ SendCommand(0b00000010, 0x0);
+
+ delay(1); 
+}
+
+void ShiftDisplayDown() {
+ ReturnHome();
+  
+ for(int i = 0; i < 40; i++) {
+  SendCommand(0b00010100, 0x0);
+ } 
+}
+
 void setup() {
   // Initialize LCD
   SetupLCD();
@@ -234,7 +209,20 @@ void setup() {
   
 void loop() {
   SendPhrase("Driver Test");
+  ShiftDisplayDown();
+  SetCursor(1);
   delay(1500);
+  
+  SendCharacter('T');
+  delay(500);
+  SendCharacter('E');
+  delay(500);
+  SendCharacter('S');
+  delay(500);
+  SendCharacter('T');
+  delay(500);
+  
+  SetCursor(0);
   ClearScreen();
-  delay(1500);
+  delay(500);
 }
