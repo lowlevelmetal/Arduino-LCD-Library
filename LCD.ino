@@ -76,7 +76,6 @@ void InitSequence() {
 void write4(byte cCharacter) {
   digitalWrite(LCD_RW, LOW);
   digitalWrite(LCD_RS, LOW);
-  //digitalWrite(LCD_RW, LOW);
   
   // Communication Timing
   delayMicroseconds(1);
@@ -120,8 +119,6 @@ void SendCommand(byte cCharacter, byte bBool) {
   } else {
    digitalWrite(LCD_RS, LOW);
   }
-  
-  //digitalWrite(LCD_RW, LOW);
   
   // Communication Timing
   delayMicroseconds(1);
@@ -201,7 +198,7 @@ void SendPhrase(char *szPhrase) {
  }
 }
 
-void Cursor(byte choice) {
+void SetCursor(byte choice) {
   if(choice == 0x0) {
     SendCommand(0b00001100, 0x0);
   } else {
@@ -209,15 +206,21 @@ void Cursor(byte choice) {
   }
 }
 
+void ClearScreen() {
+  SendCommand(0b00000001, 0x0);
+}
+
 void setup() {
   // Initialize LCD
   SetupLCD();
   
-  // Send Phrase
-  SendPhrase("Driver Test");
-  Cursor(0);
+  // Stop Cursor
+  SetCursor(0);
 }
   
 void loop() {
-  
+  SendPhrase("Driver Test");
+  delay(1500);
+  ClearScreen();
+  delay(1500);
 }
