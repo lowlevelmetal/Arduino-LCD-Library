@@ -16,6 +16,8 @@
 #define LCD_D6 11
 #define LCD_D7 12
 
+int LCD_POS = 0;
+
 // Setup LCD
 void SetupLCD() {
   // Set Pins for Output
@@ -51,6 +53,7 @@ void PullDownBus() {
 
 // Send Character
 void SendCharacter(char cCharacter) {
+  LCD_POS++;
  SendCommand(byte(cCharacter), 0x1);
 }
 
@@ -176,13 +179,16 @@ void SendPhrase(char *szPhrase) {
 void SetCursor(byte choice) {
   if(choice == 0x0) {
     SendCommand(0b00001100, 0x0);
+  } else if(choice == 0x1) {
+    SendCommand(0b00001110, 0x0);
   } else {
-    SendCommand(0b00001111, 0x0);
+    SendCommand(0b00001111, 0x0); 
   }
 }
 
 void ClearScreen() {
   SendCommand(0b00000001, 0x0);
+  LCD_POS = 0;
 }
 
 void ReturnHome() {
@@ -192,11 +198,44 @@ void ReturnHome() {
 }
 
 void ShiftDisplayDown() {
- ReturnHome();
-  
+ for(int i = 0; i < LCD_POS; i++) {
+  SendCommand(0b00010000, 0x0);
+ } 
+ 
  for(int i = 0; i < 40; i++) {
   SendCommand(0b00010100, 0x0);
+ }
+ 
+ LCD_POS = 0;
+}
+
+void ShiftDisplayUp() {
+  
+ for(int i = 0; i < LCD_POS + 40; i++) {
+  SendCommand(0b00010000, 0x0);
  } 
+ 
+ LCD_POS = 0;
+}
+
+void ClearLine() {
+ for(int i = 0; i < 16; i++) {
+   SendCharacter(' ');
+   delay(70);
+ } 
+}
+
+void WipeScreen() {
+ LCD_POS = 0;
+ ReturnHome();
+ 
+ ClearLine();
+ 
+ ShiftDisplayDown();
+ 
+ ClearLine();
+ 
+ ClearScreen(); 
 }
 
 void setup() {
@@ -210,7 +249,7 @@ void setup() {
 void loop() {
   SendPhrase("Driver Test");
   ShiftDisplayDown();
-  SetCursor(1);
+  SetCursor(2);
   delay(1500);
   
   SendCharacter('T');
@@ -222,7 +261,23 @@ void loop() {
   SendCharacter('T');
   delay(500);
   
+  ShiftDisplayUp();
+  
+  for(int i = 0; i < 3; i++) {
+   SendCharacter('T');
+   delay(500);
+   SendCharacter('E');
+   delay(500);
+   SendCharacter('S');
+   delay(500);
+   SendCharacter('T');
+   delay(500);
+   SendCharacter(' ');
+   delay(500);
+  }
+  
+  SetCursor(1);
+  WipeScreen();
   SetCursor(0);
-  ClearScreen();
   delay(500);
 }
