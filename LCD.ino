@@ -265,15 +265,15 @@ void loop() {
   
   for(int i = 0; i < 3; i++) {
    SendCharacter('T');
-   delay(500);
+   delay(250);
    SendCharacter('E');
-   delay(500);
+   delay(250);
    SendCharacter('S');
-   delay(500);
+   delay(250);
    SendCharacter('T');
-   delay(500);
+   delay(250);
    SendCharacter(' ');
-   delay(500);
+   delay(250);
   }
   
   SetCursor(1);
