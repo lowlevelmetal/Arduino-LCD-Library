@@ -253,7 +253,15 @@ void setup() {
 }
   
 void loop() {
-  SendPhrase("Driver Test");
+  for(int i = 0; i < 4; i++) {
+   SendPhrase("Driver Test V0.2");
+   delay(500);
+   if(i < 3) {
+    ClearScreen();
+   }
+   delay(100);
+  }
+  
   ShiftDisplayDown();
   SetCursor(2);
   delay(1500);
@@ -286,6 +294,8 @@ void loop() {
    delay(250);
   }
   
+  SendCharacter(' ');
+  
   ShiftDisplayDown(); 
   
   for(int i = 0; i < 3; i++) {
@@ -300,6 +310,8 @@ void loop() {
    SendCharacter(' ');
    delay(100);
   }
+  
+  SendCharacter(' ');
   
   ShiftDisplayUp();
   
@@ -330,11 +342,9 @@ void loop() {
    SendPhrase("Have Fun");
   
    delay(750);
-   
    if(i < 3) {
     ClearScreen();
    }
-   
    delay(250);
   }
   
