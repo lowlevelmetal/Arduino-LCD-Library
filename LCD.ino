@@ -60,7 +60,7 @@ void InitLCD() {
   digitalWrite(LCD_E, LOW);
   digitalWrite(LCD_RW, LOW);
   
-  // Run LCD Visual Init
+  // Run LCD 4Bit Init
   InitSequence();
   
   // Reset Screen and Cursor
@@ -74,7 +74,7 @@ void InitLCD() {
   SendCommand(0b00000110, 0x0);
 } 
 
-// LCD Visual Init
+// LCD 4Bit Init
 void InitSequence() {
  // LCD Init Commands for 4Bit Mode
  write4(0b0011);
