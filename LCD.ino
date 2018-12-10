@@ -221,11 +221,13 @@ void ShiftDisplayUp() {
 void ClearLine() {
  for(int i = 0; i < 16; i++) {
    SendCharacter(' ');
-   delay(70);
+   delay(25);
  } 
 }
 
 void WipeScreen() {
+ SetCursor(1);
+  
  LCD_POS = 0;
  ReturnHome();
  
@@ -235,7 +237,11 @@ void WipeScreen() {
  
  ClearLine();
  
+ SetCursor(0);
+ 
  ClearScreen(); 
+ 
+ delay(10);
 }
 
 void setup() {
@@ -252,14 +258,18 @@ void loop() {
   SetCursor(2);
   delay(1500);
   
-  SendCharacter('T');
-  delay(500);
-  SendCharacter('E');
-  delay(500);
-  SendCharacter('S');
-  delay(500);
-  SendCharacter('T');
-  delay(500);
+  for(int i = 0; i < 3; i++) {
+   SendCharacter('T');
+   delay(500);
+   SendCharacter('E');
+   delay(500);
+   SendCharacter('S');
+   delay(500);
+   SendCharacter('T');
+   delay(500);
+   SendCharacter(' ');
+   delay(500);
+  }
   
   ShiftDisplayUp();
   
@@ -276,8 +286,57 @@ void loop() {
    delay(250);
   }
   
-  SetCursor(1);
+  ShiftDisplayDown(); 
+  
+  for(int i = 0; i < 3; i++) {
+   SendCharacter('C');
+   delay(100);
+   SendCharacter('O');
+   delay(100);
+   SendCharacter('O');
+   delay(100);
+   SendCharacter('L');
+   delay(100);
+   SendCharacter(' ');
+   delay(100);
+  }
+  
+  ShiftDisplayUp();
+  
+  for(int i = 0; i < 3; i++) {
+   SendCharacter('C');
+   delay(50);
+   SendCharacter('O');
+   delay(50);
+   SendCharacter('O');
+   delay(50);
+   SendCharacter('L');
+   delay(50);
+   SendCharacter(' ');
+   delay(50);
+  }
+  
   WipeScreen();
-  SetCursor(0);
   delay(500);
+  
+  for(int i = 0; i < 4; i++) {
+   SendPhrase("LCD Initialized!");
+   ShiftDisplayDown();
+  
+   for(int i = 0; i < 4; i++) {
+    SendCommand(0b00010100, 0x0);
+   }
+  
+   SendPhrase("Have Fun");
+  
+   delay(750);
+   
+   if(i < 3) {
+    ClearScreen();
+   }
+   
+   delay(250);
+  }
+  
+  WipeScreen();
 }
