@@ -201,12 +201,21 @@ void SendPhrase(char *szPhrase) {
  }
 }
 
+void Cursor(byte choice) {
+  if(choice == 0x0) {
+    SendCommand(0b00001100, 0x0);
+  } else {
+    SendCommand(0b00001111, 0x0);
+  }
+}
+
 void setup() {
   // Initialize LCD
   SetupLCD();
   
   // Send Phrase
   SendPhrase("Driver Test");
+  Cursor(0);
 }
   
 void loop() {
