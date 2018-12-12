@@ -1,6 +1,8 @@
 // Custom LCD Library Test - 4Bit Mode
 // 16 x 2 LCD Based On HD44780
 
+// UNRELEASED PRE_ALPHA TEST
+
 // Matthew Geiger
 
 // Define Pins
@@ -334,6 +336,7 @@ void loop() {
    ShiftDisplayDown();
   
    for(int i = 0; i < 4; i++) {
+    // Move Cursor to Center Text
     SendCommand(0b00010100, 0x0);
    }
   
